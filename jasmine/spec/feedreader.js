@@ -126,15 +126,16 @@ $(function() {
                 expect(postTitles).toBeDefined();
             });
         } else {
-            var i, initial;
+            var i = 0;
+            var j = i +1; //change 1 to 0 to check for when content is updated even when the same index is used.
+            var initialTime, secondTime;
             beforeEach(function(done) { //use done() for async calls
-                i=0;
-                initial=i;
                 loadFeed(i, function() {
+                    initialTime = timeStamp[timeStamp.length-1];
                     headerTitle = $('h1.header-title').text();
                     postTitles = $('.feed .entry h2').text();
-                    i = i+1;
-                    loadFeed(i, function() {
+                    loadFeed(j, function() {
+                        secondTime = timeStamp[timeStamp.length-1];
                         done();
                     });
                 });
@@ -142,8 +143,9 @@ $(function() {
 
             //check for update in the header title
             it('updates header title', function() {
-                expect(i).not.toMatch(initial);
-                if (allFeeds[0].name == allFeeds[1].name){
+                expect(secondTime).toBeGreaterThan(initialTime);
+                if (allFeeds[i].name == allFeeds[j].name){
+                    //console.log('working')
                     expect($('h1.header-title').text()).toBe(headerTitle);
                 } else {
                     expect($('h1.header-title').text()).not.toBe(headerTitle);
@@ -152,9 +154,10 @@ $(function() {
 
             //check for update in post titles
             it('update post title', function() {
-                expect(i).not.toMatch(initial);
-                if (allFeeds[0].url == allFeeds[1].url){
+                expect(secondTime).toBeGreaterThan(initialTime);
+                if (allFeeds[i].url == allFeeds[j].url){
                     expect($('.feed .entry h2').text()).toBe(postTitles);
+                    //console.log('working')
                 } else {
                     expect($('.feed .entry h2').text()).not.toBe(postTitles);
                 }    

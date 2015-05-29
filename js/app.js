@@ -26,6 +26,8 @@ var allFeeds = [
     }
 ];
 
+var timeStamp = []; // used to log when a feed is updated.
+
 /* This function starts up our application. The Google Feed
  * Reader API is loaded asynchonously and will then call this
  * function when the API is loaded.
@@ -64,6 +66,7 @@ function loadFeed(id, cb) {
                 entriesLen = entries.length,
                 entryTemplate = Handlebars.compile($('.tpl-entry').html());
 
+            timeStamp.push(new Date().getTime()); //time stamp is only added when result is success
             title.html(feedName);   // Set the header text
             container.empty();      // Empty out all previous entries
 
