@@ -32,7 +32,7 @@ $(function() {
          * and that the URL is not empty.
          */
         it('each feed url is defined', function(){
-            for (var i=0; i<allFeeds.length; i++){
+            for (var i = 0; i < allFeeds.length; i++) {
                 expect(allFeeds[i].url).toBeDefined();
                 expect(allFeeds[i].url.length).not.toBe(0);
             }
@@ -51,7 +51,7 @@ $(function() {
     });
 
 
-    /* TODO: Write a new test suite named "The menu" */
+    //Test for the Menu
     describe('The menu', function() {
 
         // The menu element is hidden by default. Use css class menu-hidden. 
@@ -73,7 +73,7 @@ $(function() {
         });
     });
     
-    /* TODO: Write a new test suite named "Initial Entries" */
+    //Test for Initial Entries
     describe ('Initial Entries', function(){
 
         /* a test that ensures when the loadFeed
@@ -98,7 +98,7 @@ $(function() {
         }
     });
 
-    /* TODO: Write a new test suite named "New Feed Selection" */
+    //Test for Feed Selection
     describe('New Feed Selection', function(){
         var headerTitle, postTitles;
 
@@ -108,11 +108,11 @@ $(function() {
          */
 
         //loop through all the feeds.
-        for (var i = 0; i<allFeeds.length-1; i++){
+        for (var i = 0; i<allFeeds.length-1; i++){ //loop breaks the code.
             beforeEach(function(done) { //use done() for async calls
                 loadFeed(0, function() {
-                    var headerTitle = $('h1.header-title').text();
-                    var postTitles = $('.feed .entry h2').text();
+                    headerTitle = $('h1.header-title').text();
+                    postTitles = $('.feed .entry h2').text();
                     loadFeed(1, function() {
                         done();
                     });
@@ -120,14 +120,22 @@ $(function() {
             });
 
             //check for update in the header title
-            it('updates header title', function(done) { 
-                expect($('h1.header-title').text()).not.toBe(headerTitle);
+            it('updates header title', function(done) {
+                if (allFeeds[0].name == allFeeds[1].name){
+                    expect($('h1.header-title').text()).toBe(headerTitle);
+                } else {
+                    expect($('h1.header-title').text()).not.toBe(headerTitle);
+                }
                 done();
             });
 
             //check for update in post titles
             it('update post post', function(done) {
-                expect($('.feed .entry h2').text()).not.toBe(postTitles);
+                if (allFeeds[0].url == allFeeds[1].url){
+                    expect($('.feed .entry h2').text()).toBe(postTitles);
+                } else {
+                    expect($('.feed .entry h2').text()).not.toBe(postTitles);
+                }
                 done();
             });
         }
