@@ -32,10 +32,10 @@ $(function() {
          * and that the URL is not empty.
          */
         it('each feed url is defined', function(){
-            for (var i = 0; i < allFeeds.length; i++) {
-                expect(allFeeds[i].url).toBeDefined();
-                expect(allFeeds[i].url.length).not.toBe(0);
-            }
+            allFeeds.forEach(function(feed) {
+                expect(feed.url).toBeDefined();
+                expect(feed.url.length).not.toBe(0);
+            })
         });
 
         /* Loops through each feed
@@ -107,8 +107,25 @@ $(function() {
          * Remember, loadFeed() is asynchronous.
          */
 
-        //loop through all the feeds.
-        for (var i = 0; i<allFeeds.length-1; i++){ //loop breaks the code.
+        if(allFeeds.length == 1){
+            beforeEach(function(done) { //use done() for async calls
+                loadFeed(0, function() {
+                    headerTitle = $('h1.header-title').text();
+                    postTitles = $('.feed .entry h2').text();
+                    done();
+                });
+            });
+
+            //check for update in the header title
+            it('updates header title', function() {
+                expect(headerTitle).toBeDefined();
+            });
+
+            //check for update in post titles
+            it('update post title', function() {
+                expect(postTitles).toBeDefined();
+            });
+        } else {
             beforeEach(function(done) { //use done() for async calls
                 loadFeed(0, function() {
                     headerTitle = $('h1.header-title').text();
@@ -120,23 +137,21 @@ $(function() {
             });
 
             //check for update in the header title
-            it('updates header title', function(done) {
+            it('updates header title', function() {
                 if (allFeeds[0].name == allFeeds[1].name){
                     expect($('h1.header-title').text()).toBe(headerTitle);
                 } else {
                     expect($('h1.header-title').text()).not.toBe(headerTitle);
                 }
-                done();
             });
 
             //check for update in post titles
-            it('update post post', function(done) {
+            it('update post title', function() {
                 if (allFeeds[0].url == allFeeds[1].url){
                     expect($('.feed .entry h2').text()).toBe(postTitles);
                 } else {
                     expect($('.feed .entry h2').text()).not.toBe(postTitles);
-                }
-                done();
+                }    
             });
         }
     });
