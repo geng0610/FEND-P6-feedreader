@@ -109,14 +109,11 @@ $(function() {
 
         var i = 0;
         var j = i +1; //change 1 to 0 to check for when content is updated even when the same index is used.
-        var initialTime, secondTime;
         beforeEach(function(done) { //use done() for async calls
             loadFeed(i, function() {
-                initialTime = timeStamp[timeStamp.length-1];
                 headerTitle = $('h1.header-title').text();
                 postTitles = $('.feed .entry h2').text();
                 loadFeed(j, function() {
-                    secondTime = timeStamp[timeStamp.length-1];
                     done();
                 });
             });
@@ -124,24 +121,12 @@ $(function() {
 
         //check for update in the header title
         it('updates header title', function() {
-            expect(secondTime).toBeGreaterThan(initialTime);
-            if (allFeeds[i].name == allFeeds[j].name){
-                //console.log('working')
-                expect($('h1.header-title').text()).toBe(headerTitle);
-            } else {
-                expect($('h1.header-title').text()).not.toBe(headerTitle);
-            }
+            expect($('h1.header-title').text()).not.toBe(headerTitle);
         });
 
         //check for update in post titles
         it('update post title', function() {
-            expect(secondTime).toBeGreaterThan(initialTime);
-            if (allFeeds[i].url == allFeeds[j].url){
-                expect($('.feed .entry h2').text()).toBe(postTitles);
-                //console.log('working')
-            } else {
-                expect($('.feed .entry h2').text()).not.toBe(postTitles);
-            }    
+            expect($('.feed .entry h2').text()).not.toBe(postTitles);    
         });
     });
 }());
